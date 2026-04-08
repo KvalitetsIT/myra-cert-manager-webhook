@@ -120,7 +120,7 @@ jobs:
         env:
           VERSION: ${{ needs.version.outputs.version }}
         run: |-
-          yq -i '.image.tag = env(VERSION)' deploy/myra-cert-manger-webhook/values.yaml
+          yq -i '.image.tag = env(VERSION)' deploy/myra-cert-manager-webhook/values.yaml
 
       - name: Build Chart
         env:

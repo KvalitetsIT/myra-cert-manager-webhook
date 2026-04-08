@@ -9,4 +9,4 @@ RUN go mod download
 COPY . .
 RUN go build -v -o /usr/local/bin/app ./cmd/app/main.go
 
-CMD ["app"]
+ENTRYPOINT ["/usr/local/bin/app"]

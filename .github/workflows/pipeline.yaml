@@ -120,15 +120,13 @@ jobs:
         env:
           VERSION: ${{ needs.version.outputs.version }}
         run: |-
-          yq -i '.image.tag = env(VERSION)' charts/myra-cert-manger-webhook/values.yaml
+          yq -i '.image.tag = env(VERSION)' deploy/myra-cert-manger-webhook/values.yaml
 
       - name: Build Chart
         env:
           VERSION: ${{ needs.version.outputs.version }}
         run: |-
-          sed -i "s/^version: .*/version: ${VERSION}/g" charts/myra-cert-manger-webhook/Chart.yaml
-          sed -i "s/^appVersion: .*/appVersion: ${VERSION}/g" charts/myra-cert-manger-webhook/Chart.yaml
-          helm package charts/myra-cert-manger-webhook
+          helm package deploy/myra-cert-manger-webhook --app-version ${VERSION} --version ${VERSION}
 
       - name: Configure Git
         run: |

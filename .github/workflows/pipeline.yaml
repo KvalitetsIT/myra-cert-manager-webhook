@@ -126,7 +126,7 @@ jobs:
         env:
           VERSION: ${{ needs.version.outputs.version }}
         run: |-
-          helm package deploy/myra-cert-manger-webhook --app-version ${VERSION} --version ${VERSION}
+          helm package deploy/myra-cert-manager-webhook --app-version ${VERSION} --version ${VERSION}
 
       - name: Configure Git
         run: |
@@ -145,10 +145,10 @@ jobs:
         env:
           TAG: ${{ needs.version.outputs.version }}
         run: |
-          mkdir -p helm-repo/myra-cert-manger-webhook
-          cp myra-cert-manger-webhook-*.tgz helm-repo/myra-cert-manger-webhook/
+          mkdir -p helm-repo/myra-cert-manager-webhook
+          cp myra-cert-manager-webhook-*.tgz helm-repo/myra-cert-manager-webhook/
           cd helm-repo
           helm repo index . --url https://raw.githubusercontent.com/KvalitetsIT/helm-repo/master/
           git add -A
-          git commit -m "chore: release myra-cert-manger-webhook chart v${TAG}"
+          git commit -m "chore: release myra-cert-manager-webhook chart v${TAG}"
           git push

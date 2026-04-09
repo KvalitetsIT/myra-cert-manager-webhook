@@ -21,7 +21,7 @@ func TestMyraMapper_ToExternal(t *testing.T) {
 
 	expected := myrasec.DNSRecord{
 		ID:         0,
-		Name:       record.ResolvedFQDN,
+		Name:       "_acme-challenge.example.com",
 		Value:      record.Key,
 		RecordType: record.Type,
 		Active:     true,

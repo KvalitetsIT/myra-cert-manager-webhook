@@ -8,14 +8,17 @@ on:
   pull_request:
     branches: ["main"]
 
+permissions:
+  contents: read
+
 jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
 
       - name: Set up Go
-        uses: actions/setup-go@v5
+        uses: actions/setup-go@40f1582b2485089dde7abd97c1529aa768e1baff # v5
         with:
           go-version: "1.25.7"
 
@@ -43,15 +46,15 @@ jobs:
           # This finds 'badge/coverage-XX.X' and replaces the number with the new $COVERAGE
           sed -i -E "s/(badge\/coverage-)[0-9.]+/\1${COVERAGE}/" README.md
 
-    #  - name: Commit and Push Badge
-    #    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    #    run: |
-    #      git config --local user.email "action@github.com"
-    #      git config --local user.name "GitHub Action"
-    #      git add README.md
-    #      # Avoid error if nothing changed
-    #      git commit -m "chore: update coverage badge [skip ci]" || exit 0
-    #      git push
+      - name: Commit and Push Badge
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add README.md
+          # Avoid error if nothing changed
+          git commit -m "chore: update coverage badge [skip ci]" || exit 0
+          git push
 
   version:
     name: Resolve Version
@@ -76,23 +79,27 @@ jobs:
       - test
       - version
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f # v3
 
       - name: Login to Docker Hub
-        uses: docker/login-action@v3
+        uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9 # v3
         with:
           username: ${{ secrets.DOCKER_HUB_USER }}
           password: ${{ secrets.DOCKER_HUB_PASSWORD }}
 
       - name: Build and Push
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@10e90e3645eae34f1e60eeb005ba3a3d33f178e8 # v6
         with:
           context: .
           push: true
+          sbom: true
+          provenance: true
           tags: |
             kvalitetsit/myra-cert-manager-webhook:latest
             kvalitetsit/myra-cert-manager-webhook:${{ github.sha }}

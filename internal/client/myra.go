@@ -49,7 +49,7 @@ func (c *MyraClient) OnDelete(record myrasec.DNSRecord) (myrasec.DNSRecord, erro
 	recordId, err := c.get_record_id(domainId, record.Name)
 	if err != nil {
 		// If the record isn't found, it might have been "cleaned up" already
-		// Ignoring the error and returning record
+		c.logger.Warn("Record not found during cleanup, skipping delete", slog.String("name", record.Name), slog.Any("error", err))
 		return record, nil
 	}
 
@@ -75,10 +75,14 @@ func (c *MyraClient) OnAdd(record myrasec.DNSRecord) (myrasec.DNSRecord, error) 
 	if err != nil {
 		return myrasec.DNSRecord{}, fmt.Errorf("A domain id is required in order to add the record; %w", err)
 	}
+
+	c.logger.Info("creating record", slog.Any("record", record), slog.Any("domainId", domain_id))
 	createdRecord, err := c.api.CreateDNSRecord(&record, domain_id)
 	if err != nil {
+		c.logger.Error("Failed to create record", slog.Any("record", record), slog.Any("domainId", domain_id), slog.Any("error", err))
 		return myrasec.DNSRecord{}, fmt.Errorf("Could not create dns record; %w", err)
 	}
+	c.logger.Info("created record", slog.Any("created record", createdRecord), slog.Any("domainId", domain_id))
 	return *createdRecord, err
 }
 
@@ -90,6 +94,11 @@ func (c *MyraClient) get_record_id(domainId int, recordName string) (int, error)
 
 	recordId, err := extractId[myrasec.DNSRecord](records, recordName, func(r myrasec.DNSRecord) (int, string) { return r.ID, r.Name })
 	if err != nil {
+		names := make([]string, len(records))
+		for i, r := range records {
+			names[i] = r.Name
+		}
+		c.logger.Debug("record lookup failed", slog.String("searched", recordName), slog.Any("available", names))
 		return -1, fmt.Errorf("Could not derive record id from the fetched records; %s", err)
 	}
 	return recordId, nil

@@ -1,6 +1,6 @@
 module github.com/KvalitetsIT/myra-cert-manager-webhook
 
-go 1.25.7
+go 1.25.9
 
 require (
 	github.com/Myra-Security-GmbH/myrasec-go/v2 v2.51.0

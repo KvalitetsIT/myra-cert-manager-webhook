@@ -1,6 +1,8 @@
 package mapping
 
 import (
+	"strings"
+
 	"github.com/KvalitetsIT/myra-cert-manager-webhook/internal/models"
 	"github.com/Myra-Security-GmbH/myrasec-go/v2"
 )
@@ -10,7 +12,7 @@ type MyraMapper struct{}
 func (m *MyraMapper) ToExternal(record models.Record) myrasec.DNSRecord {
 	return myrasec.DNSRecord{
 		ID:         0,
-		Name:       record.ResolvedFQDN,
+		Name:       strings.TrimSuffix(record.ResolvedFQDN, "."),
 		Value:      record.Key,
 		RecordType: record.Type,
 		Active:     true,

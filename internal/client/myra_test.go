@@ -1,6 +1,7 @@
 package client
 
 import (
+	"log/slog"
 	"testing"
 
 	"github.com/KvalitetsIT/myra-cert-manager-webhook/internal/configs"
@@ -119,7 +120,7 @@ func createSampleDomain() myrasec.Domain {
 */
 func TestMyraClient_get_record_id(t *testing.T) {
 	mockAPI := new(mocks.MockedAPI)
-	client := &MyraClient{api: mockAPI, cfg: configs.Myra{}}
+	client := &MyraClient{api: mockAPI, cfg: configs.Myra{}, logger: slog.Default()}
 
 	domainID := 1
 	records := []myrasec.DNSRecord{

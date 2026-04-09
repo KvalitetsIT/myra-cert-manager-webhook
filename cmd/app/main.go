@@ -14,14 +14,11 @@ var CONFIG configs.Configuration
 var logger *slog.Logger
 
 func init() {
-
 	logger = logging.NewJSONLogger()
 	slog.SetDefault(logger)
 
 	loadEnv()
 	parseEnv()
-
-	logger.Info("Loaded configuration", slog.Any("Configuration", CONFIG))
 }
 
 func main() {

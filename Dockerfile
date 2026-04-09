@@ -1,12 +1,12 @@
-FROM golang:1.25
-
+FROM golang:1.25 AS builder
 WORKDIR /usr/src/app
-
-# pre-copy/cache go.mod for pre-downloading dependencies and only redownloading them in subsequent builds if they change
 COPY go.mod go.sum ./
 RUN go mod download
-
 COPY . .
-RUN go build -v -o /usr/local/bin/app ./cmd/app/main.go
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -trimpath -ldflags="-s -w" -o /app ./cmd/app/main.go
 
-ENTRYPOINT ["/usr/local/bin/app"]
+FROM scratch
+WORKDIR /app
+COPY --from=builder /app /app/app
+USER 65532:65532
+ENTRYPOINT ["/app/app"]

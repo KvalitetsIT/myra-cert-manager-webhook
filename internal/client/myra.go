@@ -70,7 +70,7 @@ func (c *MyraClient) OnDelete(record myrasec.DNSRecord) (myrasec.DNSRecord, erro
 // Adds the given domain in the Myra Dns Server and returns the record
 func (c *MyraClient) OnAdd(record myrasec.DNSRecord) (myrasec.DNSRecord, error) {
 	record.RecordType = "TXT"
-
+	record.Comment = "This record is created by the cert-manager webhook and is part of an ACME DNS-01-challenge"
 	domain_id, err := c.get_domain_id(record.Name)
 	if err != nil {
 		return myrasec.DNSRecord{}, fmt.Errorf("A domain id is required in order to add the record; %w", err)

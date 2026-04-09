@@ -21,6 +21,13 @@ jobs:
         uses: actions/setup-go@40f1582b2485089dde7abd97c1529aa768e1baff # v5
         with:
           go-version: "1.25.9"
+          cache: true
+
+      - name: Cache envtest binaries
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
+        with:
+          path: ./bin
+          key: envtest-1.31-${{ runner.os }}
 
       - name: Install envtest Binaries
         run: |
@@ -101,6 +108,8 @@ jobs:
           platforms: linux/amd64,linux/arm64
           sbom: true
           provenance: true
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
           tags: |
             kvalitetsit/myra-cert-manager-webhook:latest
             kvalitetsit/myra-cert-manager-webhook:${{ github.sha }}

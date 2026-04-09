@@ -143,6 +143,29 @@ The webhook can be configured using **environment variables**. Below is a table 
 
 ---
 
+## Usage
+
+Once the webhook is deployed, create a `ClusterIssuer` that uses it as the DNS-01 solver:
+
+```yaml
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-prod
+spec:
+  acme:
+    server: https://acme-v02.api.letsencrypt.org/directory
+    privateKeySecretRef:
+      name: letsencrypt-prod
+    solvers:
+      - dns01:
+          webhook:
+            groupName: acme-myra.kvalitetsit.dk
+            solverName: acme-myra.kvalitetsit.dk
+```
+
+---
+
 ## Extensibility
 
 The webhook defaults to **Myra DNS**, but can be **extended with a custom DNS client**. This allows integration with other DNS providers or internal systems by implementing the same simple client interface below.

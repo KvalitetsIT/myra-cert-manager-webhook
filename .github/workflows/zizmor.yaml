@@ -17,4 +17,4 @@ jobs:
       contents: read
       id-token: write
       security-events: write
-    uses: KvalitetsIT/kit-git-workflows/.github/workflows/reusable-zizmor.yaml@lnr/setup-zizmor
+    uses: KvalitetsIT/kit-git-workflows/.github/workflows/reusable-zizmor.yaml@main

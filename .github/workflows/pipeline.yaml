@@ -1,12 +1,11 @@
-name: CI/CD Pipeline
+name: CI Pipeline
 
 on:
   push:
     branches: ["main"]
-    tags:
-      - 'v*.*.*'
   pull_request:
     branches: ["main"]
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -55,26 +54,9 @@ jobs:
           git commit -m "chore: update coverage badge [skip ci]" || exit 0
           git push
 
-  version:
-    name: Resolve Version
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-    outputs:
-      version: ${{ steps.version.outputs.version }}
-    steps:
-      - name: Resolve version from tag
-        id: version
-        env:
-          REF_NAME: ${{ github.ref_name }}
-        run: |
-          VERSION="${REF_NAME#v}"
-          printf 'version=%s\n' "$VERSION" >> "$GITHUB_OUTPUT"
-
   build-and-push:
     needs:
       - test
-      - version
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -104,80 +86,3 @@ jobs:
           tags: |
             kvalitetsit/myra-cert-manager-webhook:latest
             kvalitetsit/myra-cert-manager-webhook:${{ github.sha }}
-            ${{ startsWith(github.ref, 'refs/tags/') && format('kvalitetsit/myra-cert-manager-webhook:{0}', needs.version.outputs.version) || '' }}
-
-  release:
-    name: Create GitHub Release
-    runs-on: ubuntu-latest
-    if: startsWith(github.ref, 'refs/tags/')
-    needs:
-      - build-and-push
-      - version
-    permissions:
-      contents: write
-    steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
-
-      - name: Create Release
-        uses: softprops/action-gh-release@153bb8e04406b158c6c84fc1615b65b24149a1fe # v2.6.1
-        with:
-          tag_name: ${{ github.ref_name }}
-          name: ${{ github.ref_name }}
-          generate_release_notes: true
-
-  helm:
-    name: Publish Helm Chart
-    runs-on: ubuntu-latest
-    if: startsWith(github.ref, 'refs/tags/')
-    needs:
-      - build-and-push
-      - version
-    permissions:
-      contents: read
-      id-token: write # Needed for chart publishing.
-    steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
-        with:
-          persist-credentials: false
-
-      - uses: azure/setup-helm@dda3372f752e03dde6b3237bc9431cdc2f7a02a2 # v5.0.0
-        name: "Setup Helm"
-        with:
-          version: "v3.17.0"
-
-      - name: Update values.yaml with yq
-        env:
-          VERSION: ${{ needs.version.outputs.version }}
-        run: |-
-          yq -i '.image.tag = env(VERSION)' deploy/myra-cert-manager-webhook/values.yaml
-
-      - name: Build Chart
-        env:
-          VERSION: ${{ needs.version.outputs.version }}
-        run: |-
-          helm package deploy/myra-cert-manager-webhook --app-version ${VERSION} --version ${VERSION}
-
-      - name: Configure Git
-        run: |
-          git config --global user.name "Github Actions"
-          git config --global user.email "development@kvalitetsit.dk"
-
-      - name: Checkout Helm repo
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
-        with:
-          repository: KvalitetsIT/helm-repo
-          token: ${{ secrets.KIT_GITHUB_ACCESS }}
-          path: helm-repo
-          persist-credentials: true # Needed for pushing chart updates to helm-repo.
-
-      - name: Publish chart
-        env:
-          TAG: ${{ needs.version.outputs.version }}
-        run: |
-          mkdir -p helm-repo/myra-cert-manager-webhook
-          cp myra-cert-manager-webhook-*.tgz helm-repo/myra-cert-manager-webhook/
-          cd helm-repo
-          helm repo index . --url https://raw.githubusercontent.com/KvalitetsIT/helm-repo/master/
-          git add -A
-          git commit -m "chore: release myra-cert-manager-webhook chart v${TAG}"
-          git push

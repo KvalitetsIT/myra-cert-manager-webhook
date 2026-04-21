@@ -50,6 +50,8 @@ spec:
                 secretKeyRef:
                   name: {{ .Values.myra.apiKeySecretName }}
                   key: api-secret
+            - name: MYRA_API_URL
+              value: {{ .Values.myra.apiUrl | quote }}
           ports:
             - name: https
               containerPort: 443

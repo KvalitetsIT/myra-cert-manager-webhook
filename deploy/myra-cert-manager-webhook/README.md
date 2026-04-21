@@ -61,6 +61,7 @@ spec:
 | `image.tag` | Image tag | `latest` |
 | `image.pullPolicy` | Image pull policy | `IfNotPresent` |
 | `myra.apiKeySecretName` | Name of the secret containing the Myra API credentials | `myra-api-credentials` |
+| `myra.apiUrl` | Myra API base URL | `https://apiv2.myracloud.com` |
 | `certManager.namespace` | Namespace where cert-manager is installed | `cert-manager` |
 | `certManager.serviceAccountName` | Service account name of cert-manager | `cert-manager` |
 | `resources.limits.memory` | Memory limit | `100Mi` |

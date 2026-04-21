@@ -1,5 +1,7 @@
 cel.dev/expr v0.25.1 h1:1KrZg61W6TWSxuNZ37Xy49ps13NUovb66QLprthtwi4=
 cel.dev/expr v0.25.1/go.mod h1:hrXvqGP6G6gyx8UAHSHJ5RGk//1Oj5nXQ2NI02Nrsg4=
+github.com/KvalitetsIT/cert-manager-webhook-core v0.0.0-20260421120022-60b40fea7c14 h1:fkZ7BAJ/Hj9q3pavGtfCgBqmFIrHdx9WMOPs8+DfL+E=
+github.com/KvalitetsIT/cert-manager-webhook-core v0.0.0-20260421120022-60b40fea7c14/go.mod h1:PatyNw1J+KtRy6IhNx1aHvhMnt7kSaTw+NY/O6rsHDE=
 github.com/Myra-Security-GmbH/myrasec-go/v2 v2.51.0 h1:HE6oTQgU3BffA1ciYHVxWptpq/6CGqaKNn2cpKnuzr8=
 github.com/Myra-Security-GmbH/myrasec-go/v2 v2.51.0/go.mod h1:JNnRAqwOMJ3x7VCAhoN9csnqxki2VkeYCXKGDKMN4nE=
 github.com/Myra-Security-GmbH/signature v1.1.0 h1:/Tv8SilN0P8k5fKArvQHkf9iJWU5H34TSvgEyyZ32f4=

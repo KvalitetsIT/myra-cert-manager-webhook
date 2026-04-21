@@ -1,14 +1,15 @@
-module github.com/KvalitetsIT/myra-cert-manager-webhook
+module github.com/KvalitetsIT/cert-manager-webhook-myra
 
 go 1.25.9
 
 require (
+	github.com/KvalitetsIT/cert-manager-webhook-core v0.0.0-20260421120022-60b40fea7c14
 	github.com/Myra-Security-GmbH/myrasec-go/v2 v2.51.0
 	github.com/caarlos0/env/v11 v11.4.0
+	github.com/gorilla/mux v1.8.1
 	github.com/joho/godotenv v1.5.1
 	github.com/miekg/dns v1.1.72
 	github.com/stretchr/testify v1.11.1
-	k8s.io/client-go v0.34.1
 )
 
 require (
@@ -101,6 +102,7 @@ require (
 	k8s.io/apiextensions-apiserver v0.34.1 // indirect
 	k8s.io/apimachinery v0.34.1 // indirect
 	k8s.io/apiserver v0.34.1 // indirect
+	k8s.io/client-go v0.34.1 // indirect
 	k8s.io/component-base v0.34.1 // indirect
 	k8s.io/klog/v2 v2.130.1 // indirect
 	k8s.io/kms v0.34.1 // indirect
@@ -118,6 +120,5 @@ require (
 require (
 	github.com/Myra-Security-GmbH/signature v1.1.0 // indirect
 	github.com/cert-manager/cert-manager v1.19.4
-	github.com/gorilla/mux v1.8.1
 	golang.org/x/time v0.13.0 // indirect
 )

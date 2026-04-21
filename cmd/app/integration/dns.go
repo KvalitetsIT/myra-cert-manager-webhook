@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"log/slog"
 
-	"github.com/KvalitetsIT/myra-cert-manager-webhook/internal/testutil"
+	"github.com/KvalitetsIT/cert-manager-webhook-core/pkg/testutil"
 	"github.com/miekg/dns"
 )
 

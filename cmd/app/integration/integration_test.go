@@ -13,9 +13,10 @@ import (
 	"github.com/KvalitetsIT/cert-manager-webhook-core/pkg/configs"
 	"github.com/KvalitetsIT/cert-manager-webhook-core/pkg/logging"
 	"github.com/KvalitetsIT/cert-manager-webhook-core/pkg/models"
-	"github.com/KvalitetsIT/cert-manager-webhook-core/pkg/testutil"
+
 	myraClient "github.com/KvalitetsIT/cert-manager-webhook-myra/internal/client"
 	"github.com/KvalitetsIT/cert-manager-webhook-myra/internal/client/adaptors"
+	"github.com/KvalitetsIT/cert-manager-webhook-myra/internal/testutil"
 
 	"github.com/miekg/dns"
 

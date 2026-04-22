@@ -4,7 +4,8 @@ import (
 	"fmt"
 
 	"github.com/KvalitetsIT/cert-manager-webhook-core/pkg/models"
-	"github.com/KvalitetsIT/cert-manager-webhook-core/pkg/testutil"
+
+	"github.com/KvalitetsIT/cert-manager-webhook-myra/internal/testutil"
 	"github.com/Myra-Security-GmbH/myrasec-go/v2"
 )
 

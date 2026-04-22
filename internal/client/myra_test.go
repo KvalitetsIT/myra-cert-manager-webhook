@@ -5,7 +5,7 @@ import (
 	"testing"
 
 	"github.com/KvalitetsIT/cert-manager-webhook-core/pkg/configs"
-	"github.com/KvalitetsIT/cert-manager-webhook-core/pkg/testutil/mocks"
+	"github.com/KvalitetsIT/cert-manager-webhook-myra/internal/testutil/mocks"
 	"github.com/Myra-Security-GmbH/myrasec-go/v2"
 	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/require"
